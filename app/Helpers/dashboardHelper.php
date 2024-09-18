@@ -32,3 +32,26 @@ function myBalance()
     return $balance;
 }
 
+function customerBalance()
+{
+    $accounts = accounts::where('type', 'Customer')->get();
+    $balance = 0;
+    foreach($accounts as $account)
+    {
+        $balance += getAccountBalance($account->id);
+    }
+
+    return $balance;
+}
+
+function vendorBalance()
+{
+    $accounts = accounts::where('type', 'Vendor')->get();
+    $balance = 0;
+    foreach($accounts as $account)
+    {
+        $balance += getAccountBalance($account->id);
+    }
+
+    return $balance;
+}

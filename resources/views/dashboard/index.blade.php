@@ -33,26 +33,26 @@
                     </div><!-- end col -->
                     <div class="col">
                         <div class="mt-3 mt-md-0 py-4 px-3">
-                            <h5 class="text-muted text-uppercase fs-13">Purchase GST</h5>
+                            <h5 class="text-muted text-uppercase fs-13">Customers Balance</h5>
                             <div class="d-flex align-items-center">
                                 {{-- <div class="flex-shrink-0">
                                     <i class="ri-pulse-line display-6 text-muted cfs-22"></i>
                                 </div> --}}
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0 cfs-22"><span class="counter-value" data-target="10">0</span></h2>
+                                    <h2 class="mb-0 cfs-22"><span class="counter-value" data-target="{{customerBalance()}}">0</span></h2>
                                 </div>
                             </div>
                         </div>
                     </div><!-- end col -->
                     <div class="col">
                         <div class="mt-3 mt-lg-0 py-4 px-3">
-                            <h5 class="text-muted text-uppercase fs-13">Sales GST</h5>
+                            <h5 class="text-muted text-uppercase fs-13">Vendors Balance</h5>
                             <div class="d-flex align-items-center">
                                 {{-- <div class="flex-shrink-0">
                                     <i class="ri-trophy-line display-6 text-muted cfs-22"></i>
                                 </div> --}}
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0 cfs-22"><span class="counter-value" data-target="10">0</span></h2>
+                                    <h2 class="mb-0 cfs-22"><span class="counter-value" data-target="{{vendorBalance()}}">0</span></h2>
                                 </div>
                             </div>
                         </div>
