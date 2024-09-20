@@ -172,6 +172,10 @@
                                     Vendor Accounts </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('receivings.index') }}" class="nav-link"
+                                    data-key="t-input-masks">Payment Receiving</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('deposit_withdraw.index') }}" class="nav-link"
                                     data-key="t-input-masks">Deposit / Withdraw</a>
                             </li>
@@ -199,6 +203,11 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{route('todos.index')}}">
+                        <i class="ri-apps-2-line"></i> <span data-key="t-apps">Todos</span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#warehouses" data-bs-toggle="collapse" role="button"
