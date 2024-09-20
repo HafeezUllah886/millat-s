@@ -30,24 +30,24 @@
 
                             <div class="card-body p-4">
                                 <div class="row g-3">
-                                    <div class="col-lg-3 col-6">
+                                    <div class="col-3">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Vouchar #</p>
                                         <h5 class="fs-14 mb-0">{{$purchase->id}}</h5>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-lg-3 col-6">
+                                    <div class="col-3">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Date</p>
                                         <h5 class="fs-14 mb-0">{{date("d M Y" ,strtotime($purchase->date))}}</h5>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-lg-3 col-6">
+                                    <div class="col-3">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Vendor</p>
                                         <h5 class="fs-14 mb-0">{{$purchase->vendor->title}}</h5>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-lg-3 col-6">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Printed On</p>
-                                        <h5 class="fs-14 mb-0"><span id="total-amount">{{ date("d M Y") }}</span></h5>
+                                    <div class="col-3 ">
+                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Inv #</p>
+                                        <h5 class="fs-14 mb-0"><span id="total-amount">{{ $purchase->inv ?? "-" }}</span></h5>
                                         {{-- <h5 class="fs-14 mb-0"><span id="total-amount">{{ \Carbon\Carbon::now()->format('h:i A') }}</span></h5> --}}
                                     </div>
                                     <!--end col-->

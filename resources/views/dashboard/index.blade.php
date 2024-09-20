@@ -6,6 +6,11 @@
             <div class="card-body p-0">
                 <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-1 g-0">
                     <div class="col">
+                        @php
+                            $customersBalance = customerBalance();
+                            $vendorsBalance = vendorBalance();
+                            $myBalance = myBalance();
+                        @endphp
                         <div class="py-4 px-3">
                             <h5 class="text-muted text-uppercase fs-13">Purchases</h5>
                             <div class="d-flex align-items-center">
@@ -39,7 +44,7 @@
                                     <i class="ri-pulse-line display-6 text-muted cfs-22"></i>
                                 </div> --}}
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0 cfs-22"><span class="counter-value" data-target="{{customerBalance()}}">0</span></h2>
+                                    <h2 class="mb-0 cfs-22 {{$customersBalance < 0 ? "text-danger" : "text-success"}}"><span class="counter-value" data-target="{{customerBalance()}}">0</span></h2>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +57,7 @@
                                     <i class="ri-trophy-line display-6 text-muted cfs-22"></i>
                                 </div> --}}
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0 cfs-22"><span class="counter-value" data-target="{{vendorBalance()}}">0</span></h2>
+                                    <h2 class="mb-0 cfs-22 {{$vendorsBalance < 0 ? "text-danger" : "text-success"}}""><span class="counter-value" data-target="{{vendorBalance()}}">0</span></h2>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +70,7 @@
                                     <i class="ri-service-line display-6 text-muted cfs-22"></i>
                                 </div> --}}
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0 cfs-22"><span class="counter-value" data-target="{{myBalance()}}">0</span></h2>
+                                    <h2 class="mb-0 cfs-22 {{$myBalance < 0 ? "text-danger" : "text-success"}}""><span class="counter-value" data-target="{{myBalance()}}">0</span></h2>
                                 </div>
                             </div>
                         </div>

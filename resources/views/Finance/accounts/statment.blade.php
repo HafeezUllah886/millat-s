@@ -11,19 +11,9 @@
                             <div class="card-header border-bottom-dashed p-4">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <h1>JABBAR & BROTHERS</h1>
-                                        <div class="mt-sm-5 mt-4">
-                                            <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
-                                            <p class="text-muted mb-1" id="address-details">Quetta, Pakistan</p>
-                                            <p class="text-muted mb-0" id="zip-code"><span>Zip-code:</span> 87300</p>
-                                        </div>
+                                        <h1>MILLAT MACHINERY & SOLAR AGENCY</h1>
                                     </div>
-                                    <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <h6><span class="text-muted fw-normal">Registration No:</span><span id="legal-register-no">987654</span></h6>
-                                        <h6><span class="text-muted fw-normal">Email:</span><span id="email">test@email.com</span></h6>
-                                        <h6><span class="text-muted fw-normal">Website:</span> <a href="#" class="link-primary" target="_blank" id="website">www.testWeb.com</a></h6>
-                                        <h6 class="mb-0"><span class="text-muted fw-normal">Contact No: </span><span id="contact-no"> +(01) 234 6789</span></h6>
-                                    </div>
+                                   
                                 </div>
                             </div>
                             <!--end card-header-->
@@ -88,7 +78,7 @@
                                                 <td>{{ $key+1 }}</td>
                                                 <td>{{ $trans->refID }}</td>
                                                 <td>{{ date('d M Y', strtotime($trans->date)) }}</td>
-                                                <td class="text-start">{{ $trans->notes }}</td>
+                                                <td class="text-start">{!! $trans->notes !!}</td>
                                                 <td class="text-end">{{ number_format($trans->cr) }}</td>
                                                 <td class="text-end">{{ number_format($trans->db) }}</td>
                                                 <td class="text-end">{{ number_format($balance) }}</td>
