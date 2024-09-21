@@ -8,7 +8,11 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-6"><h3> Create Purchase </h3></div>
-                                <div class="col-6 d-flex flex-row-reverse"><button onclick="window.close()" class="btn btn-danger">Close</button></div>
+
+                                <div class="col-6 d-flex flex-row-reverse">
+                                    <button onclick="window.close()" class="btn btn-danger">Close</button>
+                                    <button type="button" class="btn btn-primary" style="margin-right:10px;" data-bs-toggle="modal" data-bs-target="#new">Add Product</button>
+                                </div>
                             </div>
 
                         </div>
@@ -126,6 +130,51 @@
                 </div>
             </form>
             </div>
+            <div id="new" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+            style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Create New Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                    </div>
+                    <form id="productForm">
+                        <div class="modal-body">
+                            <div class="form-group mt-2">
+                                <label for="name">Name</label>
+                                <input type="text" name="name" required id="name" class="form-control">
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="catID">Category</label>
+                               <select name="catID" id="catID" class="form-control">
+                                @foreach ($cats as $cat)
+                                    <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                @endforeach
+                               </select>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="pprice">Purchase Price</label>
+                                <input type="number" step="any" required name="pprice"
+                                    value="0" min="0" id="pprice"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="price">Sale Price</label>
+                                <input type="number" step="any" required name="price" value="0" min="0" id="price" class="form-control">
+                            </div>
+                           {{--  <div class="form-group mt-2">
+                                <label for="discount">Discount</label>
+                                <input type="number" step="any" name="discount" required value="0" min="0" id="discount" class="form-control">
+                            </div> --}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
         </div>
         <!--end card-->
@@ -234,6 +283,43 @@
             updateTotal();
         }
 
+        $(document).ready(function() {
+        $('#productForm').submit(function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            $.ajax({
+                url: '{{url("/productAjax")}}', // Your GET URL
+                method: 'GET',
+                data: $(this).serialize(), // Serialize the form data
+                success: function(response) {
+                    $("#new").modal('hide');
+                    if(response.response == "Exists")
+                    {
+                        Toastify({
+                        text: "Product Already Exists",
+                        className: "info",
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "center", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #FF5733, #E70000)",
+                        }
+                        }).showToast();
+                    }
+                    else
+                    {
+                        getSingleProduct(response.response);
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    // Handle errors
+                }
+            });
+        });
+    });
 
     </script>
 @endsection

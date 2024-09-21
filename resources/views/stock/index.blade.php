@@ -11,6 +11,7 @@
                         <thead>
                             <th>#</th>
                             <th>Product</th>
+                            <th>Category</th>
                             <th>Stock</th>
                             <th>Action</th>
                         </thead>
@@ -19,6 +20,7 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $product->name }}</td>
+                                    <td>{{ $product->category->name }}</td>
                                     <td>{{ number_format(getStock($product->id), 2) }}</td>
                                     <td>
                                         <button class="btn btn-info" onclick="ViewDetails({{ $product->id }})">

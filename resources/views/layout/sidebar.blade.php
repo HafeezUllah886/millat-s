@@ -140,6 +140,10 @@
                                 <a href="{{ route('product.index') }}" class="nav-link" data-key="t-chat">Products
                                     List </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('categories.index') }}" class="nav-link" data-key="t-chat">Products
+                                    Categories </a>
+                            </li>
                            {{--  <li class="nav-item">
                                 <a href="{{ route('units.index') }}" class="nav-link" data-key="t-chat"> Units </a>
                             </li> --}}

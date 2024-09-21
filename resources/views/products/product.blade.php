@@ -23,9 +23,10 @@
                         <thead>
                             <th>#</th>
                             <th>Name</th>
+                            <th>Category</th>
                             <th>Purchase Price</th>
                             <th>Sale Price</th>
-                            <th>Discount</th>
+                           {{--  <th>Discount</th> --}}
                             <th>Action</th>
                         </thead>
                         <tbody>
@@ -33,9 +34,10 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->category->name }}</td>
                                     <td>{{ number_format($item->pprice, 2) }}</td>
                                     <td>{{ number_format($item->price, 2) }}</td>
-                                    <td>{{ number_format($item->discount, 2) }}</td>
+                                   {{--  <td>{{ number_format($item->discount, 2) }}</td> --}}
                                     <td>
                                         <button type="button" class="btn btn-info " data-bs-toggle="modal"
                                             data-bs-target="#edit_{{ $item->id }}">Edit</button>
@@ -61,6 +63,14 @@
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
+                                                        <label for="catID">Category</label>
+                                                       <select name="catID" id="catID" class="form-control">
+                                                        @foreach ($cats as $cat)
+                                                            <option value="{{$cat->id}}" @selected($cat->id == $item->catID)>{{$cat->name}}</option>
+                                                        @endforeach
+                                                       </select>
+                                                    </div>
+                                                    <div class="form-group mt-2">
                                                         <label for="pprice">Purchase Price</label>
                                                         <input type="number" step="any" name="pprice" required
                                                             value="{{ $item->pprice }}" min="0" id="pprice"
@@ -72,12 +82,12 @@
                                                             value="{{ $item->price }}" min="0" id="price"
                                                             class="form-control">
                                                     </div>
-                                                    <div class="form-group mt-2">
+                                                   {{--  <div class="form-group mt-2">
                                                         <label for="discount">Discount</label>
                                                         <input type="number" step="any" name="discount" required
                                                             value="{{ $item->discount }}" min="0"
                                                             id="discount" class="form-control">
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light"
@@ -114,6 +124,14 @@
                             <input type="text" name="name" required id="name" class="form-control">
                         </div>
                         <div class="form-group mt-2">
+                            <label for="catID">Category</label>
+                           <select name="catID" id="catID" class="form-control">
+                            @foreach ($cats as $cat)
+                                <option value="{{$cat->id}}">{{$cat->name}}</option>
+                            @endforeach
+                           </select>
+                        </div>
+                        <div class="form-group mt-2">
                             <label for="pprice">Purchase Price</label>
                             <input type="number" step="any" name="pprice" required
                                 value="" min="0" id="pprice"
@@ -123,10 +141,10 @@
                             <label for="price">Sale Price</label>
                             <input type="number" step="any" name="price" required value="" min="0" id="price" class="form-control">
                         </div>
-                        <div class="form-group mt-2">
+                       {{--  <div class="form-group mt-2">
                             <label for="discount">Discount</label>
                             <input type="number" step="any" name="discount" required value="0" min="0" id="discount" class="form-control">
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
