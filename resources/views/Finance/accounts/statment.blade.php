@@ -13,7 +13,7 @@
                                     <div class="flex-grow-1">
                                         <h1>MILLAT MACHINERY & SOLAR AGENCY</h1>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                             <!--end card-header-->
@@ -35,8 +35,9 @@
                                     <!--end col-->
                                     <div class="col-lg-3 col-6">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Balance</p>
-                                        <h5 class="fs-14 mb-0"><small class="text-muted" id="invoice-time">Current &nbsp;</small><span id="invoice-date">Rs. {{ number_format($cur_balance) }}</span> </h5>
-                                        <h5 class="fs-14 mb-0"><small class="text-muted" id="invoice-time">Previous </small><span id="invoice-date">Rs. {{ number_format($pre_balance) }}</span> </h5>
+                                        <h5 class="fs-14 mb-0"><small class="text-muted" id="invoice-time">Opening </small><span id="invoice-date">Rs. {{ number_format($pre_balance) }}</span> </h5>
+                                        <h5 class="fs-14 mb-0"><small class="text-muted" id="invoice-time">Closing &nbsp;&nbsp;</small><span id="invoice-date">Rs. {{ number_format($cur_balance) }}</span> </h5>
+
                                     </div>
                                     <!--end col-->
                                     <div class="col-lg-3 col-6">
@@ -60,8 +61,8 @@
                                                 <th scope="col" style="width: 50px;">Ref#</th>
                                                 <th scope="col">Date</th>
                                                 <th scope="col" class="text-start">Notes</th>
-                                                <th scope="col" class="text-end">Credit</th>
-                                                <th scope="col" class="text-end">Debit</th>
+                                                <th scope="col" class="text-end text-success">Credit</th>
+                                                <th scope="col" class="text-end text-danger">Debit</th>
                                                 <th scope="col" class="text-end">Balance</th>
                                             </tr>
                                         </thead>
@@ -79,8 +80,8 @@
                                                 <td>{{ $trans->refID }}</td>
                                                 <td>{{ date('d M Y', strtotime($trans->date)) }}</td>
                                                 <td class="text-start">{!! $trans->notes !!}</td>
-                                                <td class="text-end">{{ number_format($trans->cr) }}</td>
-                                                <td class="text-end">{{ number_format($trans->db) }}</td>
+                                                <td class="text-end text-success">{{ number_format($trans->cr) }}</td>
+                                                <td class="text-end text-danger">{{ number_format($trans->db) }}</td>
                                                 <td class="text-end">{{ number_format($balance) }}</td>
                                             </tr>
                                         @endforeach

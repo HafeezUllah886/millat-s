@@ -9,4 +9,9 @@ class transactions extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function account()
+    {
+        return $this->belongsTo(accounts::class, 'accountID');
+    }
 }

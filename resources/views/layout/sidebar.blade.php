@@ -201,6 +201,10 @@
                                 <a href="{{ route('reportProfit') }}" class="nav-link"
                                     data-key="t-basic-elements">Profit / Loss</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('reportCashbook') }}" class="nav-link"
+                                    data-key="t-basic-elements">Daily Cash Book</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
