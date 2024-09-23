@@ -1,2 +1,338 @@
 <?php
- namespace App\Http\Controllers; use App\Models\accounts; use App\Models\categories; use App\Models\products; use App\Models\sale_details; use App\Models\sale_payments; use App\Models\sales; use App\Models\salesman; use App\Models\stock; use App\Models\transactions; use App\Models\units; use App\Models\warehouses; use Exception; use Illuminate\Http\Request; use Illuminate\Support\Facades\DB; use Spatie\Browsershot\Browsershot; class SalesController extends Controller { public function index() { $sales = sales::with("\160\x61\171\155\x65\x6e\164\163")->orderby("\x69\x64", "\144\145\163\143")->paginate(10); return view("\163\141\154\145\163\x2e\x69\x6e\144\x65\x78", compact("\x73\x61\154\x65\x73")); } public function create() { $products = products::orderby("\156\x61\x6d\145", "\x61\x73\143")->get(); $warehouses = warehouses::all(); $customers = accounts::customer()->get(); $accounts = accounts::business()->get(); $cats = categories::orderBy("\156\x61\x6d\145", "\141\163\143")->get(); return view("\163\x61\154\145\x73\x2e\x63\162\x65\141\x74\145", compact("\160\162\x6f\x64\x75\143\164\163", "\167\141\x72\x65\x68\157\x75\x73\x65\163", "\x63\165\163\x74\x6f\155\145\162\x73", "\141\x63\x63\157\165\156\164\x73", "\x63\x61\164\x73")); } public function store(Request $request) { try { if ($request->isNotFilled("\x69\x64")) { throw new Exception("\120\x6c\145\141\x73\145\x20\123\x65\x6c\x65\x63\164\40\101\x74\x6c\x65\x61\163\x74\40\117\x6e\145\x20\120\162\x6f\144\x75\x63\x74"); } DB::beginTransaction(); $ref = getRef(); $sale = sales::create(array("\x63\x75\x73\x74\157\x6d\145\162\x49\x44" => $request->customerID, "\x64\x61\x74\145" => $request->date, "\156\157\x74\145\163" => $request->notes, "\x64\151\x73\x63\x6f\x75\x6e\x74" => $request->discount, "\144\x63" => $request->dc, "\x72\145\x66\111\x44" => $ref)); $ids = $request->id; $total = 0; foreach ($ids as $key => $id) { $qty = $request->qty[$key]; $price = $request->price[$key]; $total += $request->amount[$key]; sale_details::create(array("\x73\141\154\145\163\x49\x44" => $sale->id, "\160\162\x6f\144\x75\x63\x74\x49\104" => $id, "\x70\x72\x69\x63\145" => $price, "\x77\x61\162\145\x68\157\165\163\145\111\104" => $request->warehouse[$key], "\x71\x74\x79" => $qty, "\x61\x6d\157\165\x6e\x74" => $request->amount[$key], "\x64\x61\164\145" => $request->date, "\x72\x65\x66\111\x44" => $ref)); createStock($id, 0, $qty, $request->date, "\x53\x6f\154\144\x20\151\x6e\40\111\156\x76\40\x23\40{$sale->id}", $ref, $request->warehouse[$key]); } $discount = $request->discount; $dc = $request->dc; $net = $total + $dc - $discount; $sale->update(array("\164\157\x74\x61\154" => $net)); if ($request->status == "\160\x61\x69\144") { sale_payments::create(array("\163\x61\x6c\x65\x73\111\104" => $sale->id, "\x61\143\143\x6f\165\156\164\x49\104" => $request->accountID, "\144\141\x74\x65" => $request->date, "\x61\x6d\x6f\x75\156\164" => $net, "\156\157\164\145\x73" => "\106\x75\x6c\x6c\40\x50\141\151\x64", "\x72\x65\146\111\x44" => $ref)); createTransaction($request->accountID, $request->date, $net, 0, "\120\x61\171\155\x65\x6e\x74\x20\x6f\x66\40\x49\156\x76\x20\116\157\56\40{$sale->id}", $ref); } elseif ($request->status == "\x61\x64\166\141\156\143\145\144") { $balance = getAccountBalance($request->customerID); if ($net < $balance) { createTransaction($request->customerID, $request->date, $net, 0, "\120\145\x6e\144\x69\x6e\x67\x20\x41\155\x6f\x75\x6e\164\40\x6f\146\40\111\156\166\40\116\157\56\40{$sale->id}", $ref); DB::commit(); return back()->with("\163\x75\143\143\x65\x73\163", "\123\141\x6c\145\x20\103\162\145\x61\164\x65\x64\x3a\40\x42\141\154\141\156\143\x65\x20\x77\141\163\40\156\x6f\x74\x20\x65\x6e\157\165\147\150\x20\x6d\x6f\x76\x65\x64\40\x74\157\x20\165\156\x70\x61\x69\x64\x20\x2f\40\x70\x65\156\x64\x69\156\147"); } sale_payments::create(array("\163\141\154\x65\x73\111\104" => $sale->id, "\x61\143\x63\x6f\165\x6e\x74\111\104" => $request->accountID, "\x64\141\x74\x65" => $request->date, "\141\155\157\x75\156\164" => $net, "\x6e\x6f\164\145\x73" => "\106\x75\154\x6c\40\120\141\151\144", "\x72\145\x66\x49\104" => $ref)); createTransaction($request->customerID, $request->date, $net, 0, "\x49\x6e\x76\x20\x4e\157\56\40{$sale->id}", $ref); } else { createTransaction($request->customerID, $request->date, $net, 0, "\x50\145\x6e\x64\x69\x6e\x67\40\101\155\157\x75\156\x74\x20\x6f\146\40\111\156\166\40\x4e\157\56\40{$sale->id}", $ref); } DB::commit(); return to_route("\163\x61\x6c\x65\56\163\x68\x6f\x77", $sale->id)->with("\163\165\143\x63\145\x73\x73", "\123\141\x6c\x65\x20\x43\x72\x65\141\164\145\144"); } catch (\Exception $e) { DB::rollback(); return back()->with("\145\x72\162\x6f\162", $e->getMessage()); } } public function show(sales $sale) { return view("\x73\x61\x6c\145\x73\x2e\x76\151\145\167", compact("\163\x61\x6c\x65")); } public function pdf($id) { $sale = sales::find($id); $template = view("\163\x61\154\x65\x73\x2e\166\151\145\167", compact("\163\x61\154\x65"))->render(); Browsershot::html($template)->pdf(); } public function edit(sales $sale) { $products = products::orderby("\156\141\x6d\145", "\141\x73\x63")->get(); $warehouses = warehouses::all(); $customers = accounts::customer()->get(); $accounts = accounts::business()->get(); return view("\163\x61\154\x65\163\x2e\145\144\151\164", compact("\160\x72\x6f\144\165\x63\164\163", "\167\x61\162\145\150\157\x75\163\x65\x73", "\x63\165\163\164\157\155\x65\x72\163", "\x61\x63\x63\157\165\156\164\163", "\x73\141\154\x65")); } public function update(Request $request, $id) { try { DB::beginTransaction(); $sale = sales::find($id); foreach ($sale->payments as $payment) { transactions::where("\162\x65\x66\x49\x44", $payment->refID)->delete(); $payment->delete(); } foreach ($sale->details as $product) { stock::where("\x72\x65\x66\x49\104", $product->refID)->delete(); $product->delete(); } transactions::where("\162\145\x66\x49\x44", $sale->refID)->delete(); $ref = $sale->refID; $sale->update(array("\x63\x75\x73\x74\157\155\145\162\111\104" => $request->customerID, "\x64\141\x74\145" => $request->date, "\156\x6f\x74\x65\x73" => $request->notes, "\x64\151\x73\143\x6f\165\156\164" => $request->discount, "\144\x63" => $request->dc)); $ids = $request->id; $total = 0; foreach ($ids as $key => $id) { $qty = $request->qty[$key]; $price = $request->price[$key]; $total += $request->amount[$key]; sale_details::create(array("\x73\141\154\x65\163\111\104" => $sale->id, "\x70\162\157\x64\165\x63\x74\x49\104" => $id, "\160\x72\151\143\x65" => $price, "\167\141\x72\145\150\x6f\x75\163\x65\x49\x44" => $request->warehouse[$key], "\x71\164\x79" => $qty, "\x61\x6d\157\x75\x6e\x74" => $request->amount[$key], "\144\141\x74\145" => $request->date, "\162\145\x66\x49\104" => $ref)); createStock($id, 0, $qty, $request->date, "\123\157\154\x64\40\x69\156\40\111\x6e\x76\40\43\x20{$sale->id}", $ref, $request->warehouse[$key]); } $discount = $request->discount; $dc = $request->dc; $net = $total + $dc - $discount; $sale->update(array("\x74\x6f\x74\x61\154" => $net)); if ($request->status == "\x70\141\x69\x64") { sale_payments::create(array("\163\x61\154\145\163\111\104" => $sale->id, "\141\143\x63\157\165\156\164\111\104" => $request->accountID, "\x64\x61\164\x65" => $request->date, "\141\155\x6f\165\156\x74" => $net, "\156\157\164\145\x73" => "\x46\x75\154\154\40\x50\x61\151\144", "\x72\x65\146\x49\104" => $ref)); createTransaction($request->accountID, $request->date, $net, 0, "\x50\141\171\155\145\x6e\164\40\x6f\146\40\111\156\166\40\x4e\157\56\40{$sale->id}", $ref); } elseif ($request->status == "\x61\x64\166\141\x6e\143\x65\x64") { $balance = getAccountBalance($request->customerID); if ($net < $balance) { createTransaction($request->customerID, $request->date, $net, 0, "\120\145\156\144\151\x6e\147\x20\x41\x6d\157\165\x6e\164\40\x6f\x66\40\111\156\166\x20\116\157\56\x20{$sale->id}", $ref); DB::commit(); return back()->with("\x73\x75\x63\143\145\163\163", "\x53\141\154\145\x20\x43\x72\145\141\164\145\144\72\x20\102\x61\154\141\x6e\x63\145\x20\x77\141\163\x20\156\157\x74\x20\x65\156\x6f\x75\x67\x68\40\x6d\157\x76\x65\144\x20\164\157\x20\x75\x6e\x70\x61\x69\144\40\x2f\40\x70\145\x6e\x64\151\156\147"); } sale_payments::create(array("\163\141\154\145\163\x49\104" => $sale->id, "\141\143\x63\x6f\x75\x6e\164\x49\104" => $request->accountID, "\x64\141\164\145" => $request->date, "\141\x6d\x6f\165\156\164" => $net, "\156\157\x74\145\163" => "\x46\165\x6c\x6c\x20\x50\x61\151\144", "\x72\x65\146\x49\104" => $ref)); createTransaction($request->customerID, $request->date, $net, 0, "\111\156\x76\x20\116\x6f\x2e\x20{$sale->id}", $ref); } else { createTransaction($request->customerID, $request->date, $net, 0, "\120\145\156\144\151\156\147\x20\101\x6d\x6f\165\x6e\164\x20\157\146\x20\111\x6e\166\40\116\157\x2e\x20{$sale->id}", $ref); } DB::commit(); return to_route("\x73\x61\154\145\x2e\151\156\144\x65\x78")->with("\163\x75\143\143\145\163\x73", "\123\x61\x6c\145\40\x55\160\144\141\x74\145\144"); } catch (\Exception $e) { DB::rollBack(); return to_route("\x73\x61\x6c\145\x2e\151\156\x64\145\170")->with("\145\x72\x72\x6f\x72", $e->getMessage()); } } public function destroy($id) { try { DB::beginTransaction(); $sale = sales::find($id); foreach ($sale->payments as $payment) { transactions::where("\162\145\146\111\x44", $payment->refID)->delete(); $payment->delete(); } foreach ($sale->details as $product) { stock::where("\x72\x65\x66\111\x44", $product->refID)->delete(); $product->delete(); } transactions::where("\x72\x65\x66\111\104", $sale->refID)->delete(); $sale->delete(); DB::commit(); session()->forget("\x63\x6f\156\146\151\162\155\x65\144\x5f\160\141\x73\x73\167\x6f\x72\x64"); return to_route("\x73\x61\x6c\x65\x2e\x69\x6e\x64\145\x78")->with("\163\165\143\x63\145\163\x73", "\123\141\154\145\x20\x44\145\x6c\x65\x74\145\144"); } catch (\Exception $e) { DB::rollBack(); session()->forget("\143\157\x6e\x66\x69\x72\155\145\144\x5f\x70\x61\163\x73\x77\x6f\162\144"); return to_route("\163\x61\154\x65\56\x69\156\144\145\x78")->with("\145\162\162\x6f\162", $e->getMessage()); } } public function getSignleProduct($id) { $product = products::with("\x75\156\151\x74")->find($id); return $product; } }
+
+namespace App\Http\Controllers;
+
+use App\Models\accounts;
+use App\Models\categories;
+use App\Models\products;
+use App\Models\sale_details;
+use App\Models\sale_payments;
+use App\Models\sales;
+use App\Models\salesman;
+use App\Models\stock;
+use App\Models\transactions;
+use App\Models\units;
+use App\Models\warehouses;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Spatie\Browsershot\Browsershot;
+
+class SalesController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $sales = sales::with('payments')->orderby('id', 'desc')->paginate(10);
+        return view('sales.index', compact('sales'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $products = products::orderby('name', 'asc')->get();
+        $warehouses = warehouses::all();
+        $customers = accounts::customer()->get();
+        $accounts = accounts::business()->get();
+        $cats = categories::orderBy('name', 'asc')->get();
+        return view('sales.create', compact('products', 'warehouses', 'customers', 'accounts', 'cats'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+
+        try
+        {
+            if($request->isNotFilled('id'))
+            {
+                throw new Exception('Please Select Atleast One Product');
+            }
+
+            DB::beginTransaction();
+            $ref = getRef();
+            $sale = sales::create(
+                [
+                  'customerID'  => $request->customerID,
+                  'date'        => $request->date,
+                  'notes'       => $request->notes,
+                  'discount'    => $request->discount,
+                  'dc'          => $request->dc,
+                  'refID'       => $ref,
+                ]
+            );
+
+            $ids = $request->id;
+
+            $total = 0;
+            foreach($ids as $key => $id)
+            {
+                $qty = $request->qty[$key];
+                $price = $request->price[$key];
+                $total += $request->amount[$key];
+                sale_details::create(
+                    [
+                        'salesID'       => $sale->id,
+                        'productID'     => $id,
+                        'price'         => $price,
+                        'warehouseID'   => $request->warehouse[$key],
+                        'qty'           => $qty,
+                        'amount'        => $request->amount[$key],
+                        'date'          => $request->date,
+                        'refID'         => $ref,
+                    ]
+                );
+                createStock($id,0, $qty, $request->date, "Sold in Inv # $sale->id", $ref, $request->warehouse[$key]);
+            }
+
+            $discount = $request->discount;
+            $dc = $request->dc;
+            $net = ($total + $dc) - $discount;
+
+            $sale->update(
+                [
+                    'total'   => $net,
+                ]
+            );
+
+            if($request->status == 'paid')
+            {
+                sale_payments::create(
+                    [
+                        'salesID'       => $sale->id,
+                        'accountID'     => $request->accountID,
+                        'date'          => $request->date,
+                        'amount'        => $net,
+                        'notes'         => "Full Paid",
+                        'refID'         => $ref,
+                    ]
+                );
+                createTransaction($request->accountID, $request->date, $net, 0, "Payment of Inv No. $sale->id", $ref);
+            }
+            elseif($request->status == 'advanced')
+            {
+                $balance = getAccountBalance($request->customerID);
+                if($net < $balance)
+                {
+                    createTransaction($request->customerID, $request->date, $net, 0, "Pending Amount of Inv No. $sale->id", $ref);
+                    DB::commit();
+                    return back()->with('success', "Sale Created: Balance was not enough moved to unpaid / pending");
+                }
+                sale_payments::create(
+                    [
+                        'salesID'       => $sale->id,
+                        'accountID'     => $request->accountID,
+                        'date'          => $request->date,
+                        'amount'        => $net,
+                        'notes'         => "Full Paid",
+                        'refID'         => $ref,
+                    ]
+                );
+
+                createTransaction($request->customerID, $request->date, $net, 0, "Inv No. $sale->id", $ref);
+            }
+            else
+            {
+                createTransaction($request->customerID, $request->date, $net, 0, "Pending Amount of Inv No. $sale->id", $ref);
+            }
+
+           DB::commit();
+            return to_route('sale.show', $sale->id)->with('success', "Sale Created");
+
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(sales $sale)
+    {
+        return view('sales.view', compact('sale'));
+    }
+    public function pdf($id)
+    {
+        $sale = sales::find($id);
+        $template = view('sales.view', compact('sale'))->render();
+        Browsershot::html($template)->pdf();
+
+    }
+
+
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(sales $sale)
+    {
+        $products = products::orderby('name', 'asc')->get();
+        $warehouses = warehouses::all();
+        $customers = accounts::customer()->get();
+        $accounts = accounts::business()->get();
+        return view('sales.edit', compact('products', 'warehouses', 'customers', 'accounts', 'sale'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $sale = sales::find($id);
+            foreach($sale->payments as $payment)
+            {
+                transactions::where('refID', $payment->refID)->delete();
+                $payment->delete();
+            }
+            foreach($sale->details as $product)
+            {
+                stock::where('refID', $product->refID)->delete();
+                $product->delete();
+            }
+            transactions::where('refID', $sale->refID)->delete();
+            $ref = $sale->refID;
+            $sale->update(
+                [
+                    'customerID'  => $request->customerID,
+                  'date'        => $request->date,
+                  'notes'       => $request->notes,
+                  'discount'    => $request->discount,
+                  'dc'          => $request->dc,
+                  ]
+            );
+
+            $ids = $request->id;
+
+            $total = 0;
+            foreach($ids as $key => $id)
+            {
+                $qty = $request->qty[$key];
+                $price = $request->price[$key];
+                $total += $request->amount[$key];
+                sale_details::create(
+                    [
+                        'salesID'       => $sale->id,
+                        'productID'     => $id,
+                        'price'         => $price,
+                        'warehouseID'   => $request->warehouse[$key],
+                        'qty'           => $qty,
+                        'amount'        => $request->amount[$key],
+                        'date'          => $request->date,
+                        'refID'         => $ref,
+                    ]
+                );
+                createStock($id,0, $qty, $request->date, "Sold in Inv # $sale->id", $ref, $request->warehouse[$key]);
+            }
+
+            $discount = $request->discount;
+            $dc = $request->dc;
+            $net = ($total + $dc) - $discount;
+
+            $sale->update(
+                [
+                    'total'   => $net,
+                ]
+            );
+
+            if($request->status == 'paid')
+            {
+                sale_payments::create(
+                    [
+                        'salesID'       => $sale->id,
+                        'accountID'     => $request->accountID,
+                        'date'          => $request->date,
+                        'amount'        => $net,
+                        'notes'         => "Full Paid",
+                        'refID'         => $ref,
+                    ]
+                );
+                createTransaction($request->accountID, $request->date, $net, 0, "Payment of Inv No. $sale->id", $ref);
+            }
+            elseif($request->status == 'advanced')
+            {
+                $balance = getAccountBalance($request->customerID);
+                if($net < $balance)
+                {
+                    createTransaction($request->customerID, $request->date, $net, 0, "Pending Amount of Inv No. $sale->id", $ref);
+                    DB::commit();
+                    return back()->with('success', "Sale Created: Balance was not enough moved to unpaid / pending");
+                }
+                sale_payments::create(
+                    [
+                        'salesID'       => $sale->id,
+                        'accountID'     => $request->accountID,
+                        'date'          => $request->date,
+                        'amount'        => $net,
+                        'notes'         => "Full Paid",
+                        'refID'         => $ref,
+                    ]
+                );
+
+                createTransaction($request->customerID, $request->date, $net, 0, "Inv No. $sale->id", $ref);
+            }
+            else
+            {
+                createTransaction($request->customerID, $request->date, $net, 0, "Pending Amount of Inv No. $sale->id", $ref);
+            }
+
+            DB::commit();
+            return to_route('sale.index')->with('success', "Sale Updated");
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+            return to_route('sale.index')->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $sale = sales::find($id);
+            foreach($sale->payments as $payment)
+            {
+                transactions::where('refID', $payment->refID)->delete();
+                $payment->delete();
+            }
+            foreach($sale->details as $product)
+            {
+                stock::where('refID', $product->refID)->delete();
+                $product->delete();
+            }
+            transactions::where('refID', $sale->refID)->delete();
+            $sale->delete();
+            DB::commit();
+            session()->forget('confirmed_password');
+            return to_route('sale.index')->with('success', "Sale Deleted");
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+            session()->forget('confirmed_password');
+            return to_route('sale.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function getSignleProduct($id)
+    {
+        $product = products::with('unit')->find($id);
+        return $product;
+    }
+}
