@@ -316,4 +316,9 @@
 
 
     </script>
+    @foreach ($products as $product)
+    @if($product->isDefault == "Yes")
+    <script>getSingleProduct({{$product->id}});</script>
+    @endif
+    @endforeach
 @endsection

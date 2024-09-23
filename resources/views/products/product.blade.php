@@ -26,7 +26,7 @@
                             <th>Category</th>
                             <th>Purchase Price</th>
                             <th>Sale Price</th>
-                           {{--  <th>Discount</th> --}}
+                            <th>Default</th>
                             <th>Action</th>
                         </thead>
                         <tbody>
@@ -37,7 +37,7 @@
                                     <td>{{ $item->category->name }}</td>
                                     <td>{{ number_format($item->pprice, 2) }}</td>
                                     <td>{{ number_format($item->price, 2) }}</td>
-                                   {{--  <td>{{ number_format($item->discount, 2) }}</td> --}}
+                                    <td>{{ $item->isDefault }}</td>
                                     <td>
                                         <button type="button" class="btn btn-info " data-bs-toggle="modal"
                                             data-bs-target="#edit_{{ $item->id }}">Edit</button>
@@ -68,6 +68,14 @@
                                                         @foreach ($cats as $cat)
                                                             <option value="{{$cat->id}}" @selected($cat->id == $item->catID)>{{$cat->name}}</option>
                                                         @endforeach
+                                                       </select>
+                                                    </div>
+                                                    <div class="form-group mt-2">
+                                                        <label for="isDefault">Default</label>
+                                                       <select name="isDefault" id="isDefault" class="form-control">
+                                                            <option value="No" @selected($item->isDefault == "No")>No</option>
+                                                            <option value="Yes" @selected($item->isDefault == "Yes")>Yes</option>
+
                                                        </select>
                                                     </div>
                                                     <div class="form-group mt-2">
@@ -129,6 +137,14 @@
                             @foreach ($cats as $cat)
                                 <option value="{{$cat->id}}">{{$cat->name}}</option>
                             @endforeach
+                           </select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="isDefault">Default</label>
+                           <select name="isDefault" id="isDefault" class="form-control">
+                                <option value="No" >No</option>
+                                <option value="Yes" >Yes</option>
+
                            </select>
                         </div>
                         <div class="form-group mt-2">
