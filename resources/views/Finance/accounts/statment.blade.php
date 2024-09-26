@@ -6,6 +6,8 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="hstack gap-2 justify-content-end d-print-none p-2 mt-4">
+                                <a href="{{url('account/statement/pdf/')}}/{{$account->id}}/{{$from}}/{{$to}}" class="btn btn-info ml-4"><i class="ri-file-line mr-4"></i> Generate PDF</a>
+                                <a href="https://web.whatsapp.com/" target="_blank" class="btn btn-success ml-4"><i class="ri-whatsapp-line mr-4"></i> Whatsapp</a>
                                 <a href="javascript:window.print()" class="btn btn-success ml-4"><i class="ri-printer-line mr-4"></i> Print</a>
                             </div>
                             <div class="card-header border-bottom-dashed p-4">
@@ -13,7 +15,6 @@
                                     <div class="flex-grow-1">
                                         <h1>MILLAT MACHINERY & SOLAR AGENCY</h1>
                                     </div>
-
                                 </div>
                             </div>
                             <!--end card-header-->
