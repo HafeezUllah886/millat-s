@@ -222,7 +222,7 @@
                                 html += '<option value="' + warehouse.id + '" >' + warehouse.name + '</option>';
                             });
                         html += '</select></td>';
-                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id +')" min="0" step="any" value="1" class="form-control text-center" id="qty_' + id + '"></div></td>';
+                        html += '<td class="no-padding"><input type="number" name="qty[]" oninput="updateChanges(' + id +')" min="0" step="any" value="0" class="form-control text-center" id="qty_' + id + '"></div></td>';
                         html += '<td class="no-padding"><input type="number" name="price[]" oninput="updateChanges(' + id + ')" step="any" value="'+product.price+'" min="1" class="form-control text-center" id="price_' + id + '"></td>';
                         html += '<td class="no-padding"><input type="number" name="amount[]" readonly step="any" value="0.00" min="0" class="form-control text-center" id="amount_' + id + '"></td>';
                         html += '<td> <span class="btn btn-sm btn-danger" onclick="deleteRow('+id+')">X</span> </td>';
