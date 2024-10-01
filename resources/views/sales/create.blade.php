@@ -105,7 +105,16 @@
                                         <option value="advanced">Paid in Advance</option>
                                         <option value="paid">Paid</option>
                                         <option value="pending">Pending</option>
+                                        <option value="partial">Partial Payment</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-9 mt-2">
+                            </div>
+                            <div class="col-3 mt-2">
+                                <div class="form-group d-none paid">
+                                    <label for="paid">Paid Amount</label>
+                                    <input type="number" name="paid" id="paid" value="0" class="form-control">
                                 </div>
                             </div>
                             <div class="col-12 mt-2">

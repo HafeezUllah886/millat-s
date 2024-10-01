@@ -121,7 +121,10 @@
                     <div class="collapse menu-dropdown" id="stock">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('product_stock.index') }}" class="nav-link" data-key="t-chat">Products Stock</a>
+                                <a href="{{ route('product_stock.index', ['zero' => 'not_allowed']) }}" class="nav-link" data-key="t-chat">Stock</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('product_stock.index', ['zero' => 'allowed']) }}" class="nav-link" data-key="t-chat">Stock with Zero</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('stockTransfer.index') }}" class="nav-link" data-key="t-chat">Stock Transfer</a>

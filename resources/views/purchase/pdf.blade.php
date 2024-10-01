@@ -1,63 +1,92 @@
-@extends('layout.popups')
-@section('content')
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Business Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Business Management System" name="description" />
+    <meta content="Hafeez Ullah" name="author" />
+
+    <!-- Layout config Js -->
+    <script src="{{ public_path('assets/js/layout.js') }}"></script>
+    <!-- Bootstrap Css -->
+    <link href="{{ public_path('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+
+    <!-- App Css-->
+    <link href="{{ public_path('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="{{ public_path('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ public_path('assets/libs/toastify/toastify.min.css') }}" rel="stylesheet" type="text/css" />
+
+<link href='https://fonts.googleapis.com/css?family=Noto Nastaliq Urdu' rel='stylesheet'>
+<style>
+    @page {
+    size: A4;
+    margin: 1cm;
+}
+body {
+    zoom: 0.75; /* Scale down to fit the content */
+}
+</style>
+
+</head>
+
+<body>
         <div class="row justify-content-center">
-            <div class="col-xxl-9">
+            <div class="col-12">
                 <div class="card" id="demo">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="hstack gap-2 justify-content-end d-print-none p-2 mt-4">
-                                <a href="{{url('purchases/pdf/')}}/{{$purchase->id}}" class="btn btn-info ml-4"><i class="ri-file-line mr-4"></i> Generate PDF</a>
-                                <a href="https://web.whatsapp.com/" target="_blank" class="btn btn-success ml-4"><i class="ri-whatsapp-line mr-4"></i> Whatsapp</a>
-                                <a href="javascript:window.print()" class="btn btn-success ml-4"><i class="ri-printer-line mr-4"></i> Print</a>
-                            </div>
-                            <div class="card-header border-bottom-dashed p-4">
+                            <div class="card-header border-bottom-dashed">
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <h1>MILLAT MACHINERY & SOLAR AGENCY</h1>
-                                    </div>
-                                    <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <h3>Purchase Vouchar</h3>
+                                        <h2>MILLAT MACHINERY & SOLAR AGENCY</h2>
                                     </div>
                                 </div>
                             </div>
                             <!--end card-header-->
                         </div><!--end col-->
                         <div class="col-lg-12 ">
-
-                            <div class="card-body p-4">
-                                <div class="row g-3">
-                                    <div class="col-3">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Vouchar #</p>
-                                        <h5 class="fs-14 mb-0">{{$purchase->id}}</h5>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-3">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Date</p>
+                            <div class="row">
+                                <div class="col-4"></div>
+                                <div class="col-4 text-center"><h3>PURCHASE VOUCHAR</h3></div>
+                            </div>
+                            <div class="card-body">
+                                <table class="w-100">
+                                    <tr>
+                                        <td>
+                                            <p class="text-muted mb-2 text-uppercase fw-semibold">Vourchar #</p>
+                                            <h5 class="fs-14 mb-0">{{$purchase->id}}</h5>
+                                        </td>
+                                        <td>
+                                            <p class="text-muted mb-2 text-uppercase fw-semibold">Date</p>
                                         <h5 class="fs-14 mb-0">{{date("d M Y" ,strtotime($purchase->date))}}</h5>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-3">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Vendor</p>
-                                        <h5 class="fs-14 mb-0">{{$purchase->vendor->title}}</h5>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-3 ">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Inv #</p>
-                                        <h5 class="fs-14 mb-0"><span id="total-amount">{{ $purchase->inv ?? "-" }}</span></h5>
-                                        {{-- <h5 class="fs-14 mb-0"><span id="total-amount">{{ \Carbon\Carbon::now()->format('h:i A') }}</span></h5> --}}
-                                    </div>
-                                    <!--end col-->
-                                </div>
+                                        </td>
+                                        <td>
+                                            <p class="text-muted mb-2 text-uppercase fw-semibold">Vendor</p>
+                                            <h5 class="fs-14 mb-0">{{$purchase->vendor->title}}</h5>
+                                        </td>
+                                        <td>
+                                            <p class="text-muted mb-2 text-uppercase fw-semibold">Inv #</p>
+                                            <h5 class="fs-14 mb-0"><span id="total-amount">{{ $purchase->inv ?? "-" }}</span></h5>
+                                        </td>
+                                    </tr>
+                                </table>
                                 <!--end row-->
                             </div>
                             <!--end card-body-->
                         </div><!--end col-->
                         <div class="col-lg-12">
-                            <div class="card-body p-4">
+                            <div class="card-body " style="padding-right: 50px">
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-borderless text-center table-nowrap align-middle mb-0">
+                                        <div class="w-100">
+                                            <table class="table text-center align-middle mb-0 w-100">
                                                 <thead>
                                                     <tr class="table-active">
                                                         <th scope="col" style="width: 50px;">#</th>
@@ -125,6 +154,7 @@
                             <!--end card-body-->
                         </div><!--end col-->
 
+
                     </div><!--end row-->
                 </div>
                 <!--end card-->
@@ -132,27 +162,23 @@
             <!--end col-->
         </div>
         <!--end row-->
+    <!-- JAVASCRIPT -->
+    <script src="{{ public_path('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ public_path('assets/libs/simplebar/simplebar.min.js') }}"></script>
+    <script src="{{ public_path('assets/libs/node-waves/waves.min.js') }}"></script>
+    <script src="{{ public_path('assets/libs/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ public_path('assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
+    {{--     <script src="{{ asset('assets/js/plugins.js') }}"></script> --}}
 
-@endsection
+    <!-- App js -->
+    <script src="{{ public_path('assets/js/app.js') }}"></script>
+    <script src="{{ public_path('assets/libs/toastify/toastify.min.js') }}"></script>
 
-@section('page-css')
-<link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable.bootstrap5.min.css') }}" />
-<!--datatable responsive css-->
-<link rel="stylesheet" href="{{ asset('assets/libs/datatable/responsive.bootstrap.min.css') }}" />
+    <script src="{{ public_path('assets/js/jquery-3.6.0.min.js') }}"></script>
 
-<link rel="stylesheet" href="{{ asset('assets/libs/datatable/buttons.dataTables.min.css') }}">
-@endsection
-@section('page-js')
-    <script src="{{ asset('assets/libs/datatable/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('assets/libs/datatable/dataTables.bootstrap5.min.js')}}"></script>
-    <script src="{{ asset('assets/libs/datatable/dataTables.responsive.min.js')}}"></script>
-    <script src="{{ asset('assets/libs/datatable/dataTables.buttons.min.js')}}"></script>
-    <script src="{{ asset('assets/libs/datatable/buttons.print.min.js')}}"></script>
-    <script src="{{ asset('assets/libs/datatable/buttons.html5.min.js')}}"></script>
-    <script src="{{ asset('assets/libs/datatable/vfs_fonts.js')}}"></script>
-    <script src="{{ asset('assets/libs/datatable/pdfmake.min.js')}}"></script>
-    <script src="{{ asset('assets/libs/datatable/jszip.min.js')}}"></script>
+</body>
 
-    <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
-@endsection
+</html>
+
+
 

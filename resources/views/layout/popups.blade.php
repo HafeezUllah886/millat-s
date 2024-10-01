@@ -103,6 +103,18 @@
             $(this).val(0);
         }
     });
+
+    $("#status").on("change", function(){
+        var status = $(this).find(":selected").val();
+        if(status == "partial")
+        {
+            $(".paid").removeClass("d-none");
+        }
+        else
+        {
+            $(".paid").addClass("d-none");
+        }
+    });
     </script>
 </body>
 
