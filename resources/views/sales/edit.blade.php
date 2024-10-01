@@ -81,13 +81,13 @@
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="discount">Discount</label>
-                                    <input type="number" name="discount" oninput="updateTotal()" id="discount" value="{{$sale->discount}}" step="any"  class="form-control">
+                                    <input type="number" name="discount" oninput="updateTotal()" id="discount" value="{{$sale->discount}}" step="any"  class="form-control no_zero">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="dc">Delivery Charges</label>
-                                    <input type="number" name="dc" id="dc" oninput="updateTotal()" min="0" value="{{$sale->dc}}" step="any"  class="form-control">
+                                    <input type="number" name="dc" id="dc" oninput="updateTotal()" min="0" value="{{$sale->dc}}" step="any"  class="form-control no_zero">
                                 </div>
                             </div>
                             <div class="col-3">

@@ -41,19 +41,19 @@
                         <div class="navbar-brand-box horizontal-logo">
                             <a href="index.html" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <h3 class="text-dark">MQ</h3>
+                                    <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <h3 class="text-dark mt-3">MILLAT QTA</h3>
+                                    <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="17">
                                 </span>
                             </a>
 
                             <a href="index.html" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <h3 class="text-white">MQ</h3>
+                                    <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <h3 class="text-white mt-3">MILLAT QTA</h3>
+                                    <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="17">
                                 </span>
                             </a>
                         </div>
@@ -238,10 +238,11 @@
 
         window.open(route, '_blank', `width=${width},height=${height}`);
     }
+
+    
 </script>
 
     @yield('page-js')
 </body>
 
 </html>
-

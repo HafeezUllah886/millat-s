@@ -47,8 +47,6 @@
         </div>
     </div>
 
-
-
     <!-- Theme Settings -->
     @include('layout.settings')
 
@@ -96,6 +94,16 @@
     </script>
     @endif
     @yield('page-js')
+    <script>
+        $(".no_zero").on("focusout", function (){
+            console.warn("this function is working");
+        var val = $(this).val();
+        if(val == "")
+        {
+            $(this).val(0);
+        }
+    });
+    </script>
 </body>
 
 </html>

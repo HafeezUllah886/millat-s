@@ -65,13 +65,13 @@
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="discount">Discount</label>
-                                    <input type="number" name="discount" oninput="updateTotal()" id="discount" step="any" value="0" class="form-control">
+                                    <input type="number" name="discount" oninput="updateTotal()" id="discount" step="any" value="0" class="form-control no_zero">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="dc">Delivery Charges</label>
-                                    <input type="number" name="dc" id="dc" oninput="updateTotal()" min="0" step="any" value="0" class="form-control">
+                                    <input type="number" name="dc" id="dc" oninput="updateTotal()" min="0" step="any" value="0" class="form-control no_zero">
                                 </div>
                             </div>
                             <div class="col-3">
