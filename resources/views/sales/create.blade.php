@@ -80,11 +80,15 @@
                             <div class="col-3 mt-2">
                                 <div class="form-group">
                                     <label for="customer">Customer</label>
-                                    <select name="customerID" id="customer" class="selectize1">
+                                    <select name="customerID" id="customerID" class="selectize1">
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->id }}">{{ $customer->title }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="form-group customerName mt-2">
+                                    <label for="customerName">Name</label>
+                                    <input type="text" name="customerName" id="customerName" class="form-control">
                                 </div>
                             </div>
 
@@ -108,15 +112,12 @@
                                         <option value="partial">Partial Payment</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-9 mt-2">
-                            </div>
-                            <div class="col-3 mt-2">
-                                <div class="form-group d-none paid">
+                                <div class="form-group d-none paid mt-2">
                                     <label for="paid">Paid Amount</label>
                                     <input type="number" name="paid" id="paid" value="0" class="form-control">
                                 </div>
                             </div>
+
                             <div class="col-12 mt-2">
                                 <div class="form-group">
                                     <label for="notes">Notes</label>
@@ -321,6 +322,23 @@
                 }
             });
         });
+    });
+
+    function checkAccount()
+    {
+        var id = $("#customerID").find(":selected").val();
+        if(id == 2)
+        {
+            $(".customerName").removeClass("d-none");
+        }
+        else
+        {
+            $(".customerName").addClass("d-none");
+        }
+    }
+
+    $("#customerID").on("change", function(){
+        checkAccount();
     });
 
 

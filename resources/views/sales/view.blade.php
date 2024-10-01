@@ -29,7 +29,7 @@
                                     <div class="col-6">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Customer</p>
                                         <h5 class="fs-14 mb-0">{{$sale->customer->title}}</h5>
-                                        <h6 class="fs-14 mb-0">{{$sale->customer->address}}</h6>
+                                        <h6 class="fs-14 mb-0">{{$sale->customerID != 2 ? $sale->customer->address : $sale->customerName}}</h6>
                                     </div>
                                     <div class="col-3">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Date</p>

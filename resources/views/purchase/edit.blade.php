@@ -116,11 +116,15 @@
                             <div class="col-3 mt-2">
                                 <div class="form-group">
                                     <label for="vendor">Vendor</label>
-                                    <select name="vendorID" id="vendor" class="selectize1">
+                                    <select name="vendorID" id="vendorID" class="selectize1">
                                         @foreach ($vendors as $vendor)
                                             <option value="{{ $vendor->id }}" @selected($vendor->id == $purchase->vendorID)>{{ $vendor->title }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="form-group vendorName mt-2">
+                                    <label for="vendorName">Name</label>
+                                    <input type="text" name="vendorName" id="vendorName" class="form-control">
                                 </div>
                             </div>
 
@@ -263,6 +267,24 @@
             $('#row_'+id).remove();
             updateTotal();
         }
+
+        function checkAccount()
+    {
+        var id = $("#vendorID").find(":selected").val();
+        if(id == 3)
+        {
+            $(".vendorName").removeClass("d-none");
+        }
+        else
+        {
+            $(".vendorName").addClass("d-none");
+        }
+    }
+
+    $("#vendorID").on("change", function(){
+        checkAccount();
+    });
+    checkAccount();
 
 
     </script>

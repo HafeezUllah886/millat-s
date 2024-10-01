@@ -39,6 +39,7 @@
                                     <div class="col-3">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">Vendor</p>
                                         <h5 class="fs-14 mb-0">{{$purchase->vendor->title}}</h5>
+                                        <h5 class="fs-14 mb-0">{{$purchase->vendorID == 3 ? $purchase->vendorName : ""}}</h5>
                                     </div>
                                     <!--end col-->
                                     <div class="col-3 ">
