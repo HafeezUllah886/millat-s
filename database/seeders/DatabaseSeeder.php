@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\expenseCategories;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +22,6 @@ class DatabaseSeeder extends Seeder
        $this->call(productsSeeder::class);
        $this->call(accountSeeder::class);
        $this->call(warehouseSeeder::class);
+       $this->call(expenseCategorySeeder::class);
     }
 }

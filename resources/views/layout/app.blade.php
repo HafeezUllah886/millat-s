@@ -2,7 +2,6 @@
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
     data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
 <head>
-
     <meta charset="utf-8" />
     <title>Business Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,10 +28,8 @@
 </head>
 
 <body>
-
     <!-- Begin page -->
     <div id="layout-wrapper">
-
         <header id="page-topbar">
             <div class="layout-width">
                 <div class="navbar-header">
@@ -41,19 +38,19 @@
                         <div class="navbar-brand-box horizontal-logo">
                             <a href="index.html" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                                    <h3 class="text-white">MQ</h3>
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="17">
+                                    <h3 class="text-white mt-3">MILLAT QTA</h3>
                                 </span>
                             </a>
-
+                            <!-- Light Logo-->
                             <a href="index.html" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                                    <h3 class="text-white">MQ</h3>
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="17">
+                                    <h3 class="text-white mt-3">MILLAT QTA</h3>
                                 </span>
                             </a>
                         </div>
@@ -238,8 +235,6 @@
 
         window.open(route, '_blank', `width=${width},height=${height}`);
     }
-
-    
 </script>
 
     @yield('page-js')

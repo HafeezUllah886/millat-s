@@ -15,4 +15,9 @@ class expenses extends Model
     {
         return $this->belongsTo(accounts::class, 'accountID');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(expenseCategories::class, 'catID');
+    }
 }

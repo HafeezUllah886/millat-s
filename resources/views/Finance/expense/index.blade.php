@@ -5,8 +5,12 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h3>Expenses</h3>
-                    <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#new">Create
-                        New</button>
+                    <div>
+                        <a href="{{route('expensesCategories.index')}}" class="btn btn-info ">Catetgories</a>
+                        <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#new">Create
+                            New</button>
+                    </div>
+
                 </div>
                 <div class="card-body">
                     @if ($errors->any())
@@ -23,6 +27,7 @@
                         <thead>
                             <th>#</th>
                             <th>Ref #</th>
+                            <th>Category</th>
                             <th>Account</th>
                             <th>Date</th>
                             <th>Notes</th>
@@ -34,6 +39,7 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $tran->refID }}</td>
+                                    <td>{{ $tran->category->name }}</td>
                                     <td>{{ $tran->account->title }}</td>
                                     <td>{{ date('d M Y', strtotime($tran->date)) }}</td>
                                     <td>{{ $tran->notes }}</td>
@@ -69,6 +75,16 @@
                                 <option value=""></option>
                                 @foreach ($accounts as $account)
                                     <option value="{{ $account->id }}">{{ $account->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="category">Category</label>
+                            <select name="catID" id="category" required class="selectize">
+                                <option value=""></option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}
+
                                 @endforeach
                             </select>
                         </div>
@@ -121,6 +137,11 @@
 
     <script src="{{ asset('assets/libs/selectize/selectize.min.js') }}"></script>
     <script>
-        $(".selectize").selectize();
+        $(".selectize").selectize({
+    diacritics: true,
+    onType: function (query) {
+        query = query.normalize('NFC'); // Normalize the query to ensure consistent search
+    }
+        });
     </script>
 @endsection
