@@ -95,13 +95,17 @@
     @endif
     @yield('page-js')
     <script>
-        $(".no_zero").on("focusout", function (){
-            console.warn("this function is working");
-        var val = $(this).val();
-        if(val == "")
-        {
-            $(this).val(0);
+        let timeout;
+        $(".no_zero").on("input", function (){
+            clearTimeout(timeout);  // Clear any previous timeout to avoid multiple triggers
+    var $this = $(this);
+
+    timeout = setTimeout(function() {
+        if ($this.val() === '') {
+            $this.val(0);
+            updateTotal();
         }
+    }, 1000);  // 1000ms = 1 second
     });
 
     $("#status").on("change", function(){
