@@ -108,7 +108,7 @@
     }, 1000);  // 1000ms = 1 second
     });
 
-    $("#status").on("change", function(){
+    $("#status1").on("change", function(){
         var status = $(this).find(":selected").val();
         if(status == "partial")
         {

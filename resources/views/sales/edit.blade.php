@@ -131,7 +131,7 @@
                             <div class="col-3 mt-2">
                                 <div class="form-group">
                                     <label for="status">Payment Status</label>
-                                    <select name="status" id="status" class="selectize1">
+                                    <select name="status" id="status1" class="selectize1">
                                         <option value="advanced">Paid in Advance</option>
                                         <option value="paid">Paid</option>
                                         <option value="pending">Pending</option>
@@ -273,10 +273,25 @@
         if(id == 2)
         {
             $(".customerName").removeClass("d-none");
+            $('#status1 option').each(function() {
+            var optionValue = $(this).val();
+            if (optionValue === 'advanced' || optionValue === 'pending' || optionValue === 'partial') {
+                $(this).prop('disabled', true);
+            }
+            if (optionValue === 'paid') {
+                $(this).prop('selected', true);
+            }
+            });
         }
         else
         {
             $(".customerName").addClass("d-none");
+            $('#status1 option').each(function() {
+            var optionValue = $(this).val();
+            if (optionValue === 'advanced' || optionValue === 'pending' || optionValue === 'partial') {
+                $(this).prop('disabled', false);
+            }
+            });
         }
     }
 

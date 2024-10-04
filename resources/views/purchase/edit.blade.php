@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="form-group vendorName mt-2">
                                     <label for="vendorName">Name</label>
-                                    <input type="text" name="vendorName" id="vendorName" class="form-control">
+                                    <input type="text" name="vendorName" value="{{$purchase->vendorName}}" id="vendorName" class="form-control">
                                 </div>
                             </div>
 
@@ -141,7 +141,7 @@
                             <div class="col-3 mt-2">
                                 <div class="form-group">
                                     <label for="status">Payment Status</label>
-                                    <select name="status" id="status" class="selectize1">
+                                    <select name="status" id="status1" class="form-control">
                                         <option value="advanced">Paid in Advance</option>
                                         <option value="paid">Paid</option>
                                         <option value="pending">Pending</option>
@@ -273,11 +273,26 @@
         var id = $("#vendorID").find(":selected").val();
         if(id == 3)
         {
-            $(".vendorName").removeClass("d-none");
+            $(".customerName").removeClass("d-none");
+            $('#status1 option').each(function() {
+            var optionValue = $(this).val();
+            if (optionValue === 'advanced' || optionValue === 'pending' || optionValue === 'partial') {
+                $(this).prop('disabled', true);
+            }
+            if (optionValue === 'paid') {
+                $(this).prop('selected', true);
+            }
+            });
         }
         else
         {
-            $(".vendorName").addClass("d-none");
+            $(".customerName").addClass("d-none");
+            $('#status1 option').each(function() {
+            var optionValue = $(this).val();
+            if (optionValue === 'advanced' || optionValue === 'pending' || optionValue === 'partial') {
+                $(this).prop('disabled', false);
+            }
+            });
         }
     }
 
