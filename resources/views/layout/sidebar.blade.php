@@ -127,6 +127,12 @@
                                 <a href="{{ route('product_stock.index', ['zero' => 'allowed']) }}" class="nav-link" data-key="t-chat">Stock with Zero</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('product_stock.index', ['zero' => 'above_zero']) }}" class="nav-link" data-key="t-chat">Stock Above Zero</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('product_stock.index', ['zero' => 'below_zero']) }}" class="nav-link" data-key="t-chat">Stock Below Zero</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('stockTransfer.index') }}" class="nav-link" data-key="t-chat">Stock Transfer</a>
                             </li>
                         </ul>
